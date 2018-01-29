@@ -10,15 +10,14 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('/v1/notes', (req, res) => {
+  const searchNotes = val => {
+    return (val.title.includes(searchTerm) || val.content.includes(searchTerm));
+  };
   let { searchTerm } = req.query;
-  if(!searchTerm) {
-    res.json(data);
-  } else {
-    return res.json(data.filter(val => {
-      return (val.title.includes(searchTerm) || val.content.includes(searchTerm));
-    })); 
-  }
+  return (!searchTerm) ? res.json(data) : res.json(data.filter(searchNotes)); 
 });
+
+
 
 app.get('/v1/notes/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);

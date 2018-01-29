@@ -20,6 +20,10 @@ app.get('/v1/notes', (req, res) => {
   }
 });
 
+app.get('/v1/notes/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  res.json(data.find(item => item.id === id));
+});
 
 
 

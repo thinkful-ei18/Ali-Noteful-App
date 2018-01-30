@@ -3,25 +3,66 @@
 const data = require('./db/notes');
 const {PORT} = require('./config.js');
 const {logger} = require('./middleware');
-const {simDB} = require('./db/simDB');
+const simDB = require('./db/simDB');
+const notes = simDB.initialize(data);
 
-console.log('hello world!');
+console.log(simDB);
 
 const express = require('express');
 const app = express();
 
 app.use(express.static('public'));
+app.use(express.json());
 app.use(logger);
 
-app.get('/v1/notes', (req, res) => {
-  const searchNotes = val => (val.title.includes(searchTerm) || val.content.includes(searchTerm));
+app.get('/v1/notes', (req, res, next) => {
+  // const searchNotes = val => (val.title.includes(searchTerm) || val.content.includes(searchTerm));
   let { searchTerm } = req.query;
-  return (!searchTerm) ? res.json(data) : res.json(data.filter(searchNotes)); 
+  // return (!searchTerm) ? res.json(data) : res.json(data.filter(searchNotes)); 
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err);
+    }
+    res.json(list);
+  });
 });
 
-app.get('/v1/notes/:id', (req, res) => {
+app.get('/v1/notes/:id', (req, res, next) => {
   const id = parseInt(req.params.id, 10);
-  res.json(data.find(item => item.id === id));
+  // res.json(data.find(item => item.id === id));
+  notes.find(id, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      res.json('not found');
+    }
+  });
+});
+
+app.put('/v1/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
+
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+
+  notes.update(id, updateObj, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
 });
 
 app.get('/boom', (req, res, next) => {

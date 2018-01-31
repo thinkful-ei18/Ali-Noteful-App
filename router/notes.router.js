@@ -77,4 +77,18 @@ router.post('/', (req, res, next) => {
   });
 });
 
+router.delete('/:id', (req, res, next) => {
+  const id = req.params.id;
+  notes.delete(id, (err, result) => {
+    if (err) {
+      return next(err);
+    } 
+    if (result) {
+      res.sendStatus(204);
+    } else {
+      next();
+    }
+  });
+});
+
 module.exports = router; 

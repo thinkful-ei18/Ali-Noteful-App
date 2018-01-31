@@ -99,8 +99,14 @@ const noteful = (function () {
       store.currentNote = false;
       render();
     });
+  }
 
-    
+  //Delete function, grabs delete button 
+  function handleDeleteButton() {
+    $('.js-notes-list').on('click', '.js-note-delete-button', event => {
+      const noteId = getNoteIdFromElement(event.currentTarget);
+      console.log(noteId);
+    });
   }
 
   function bindEventListeners() {
@@ -108,6 +114,8 @@ const noteful = (function () {
     handleNoteSearchSubmit();
     handleNoteFormSubmit();
     handleNoteStartNewSubmit();
+    handleDeleteButton();
+
   }
 
   // This object contains the only exposed methods from this module:

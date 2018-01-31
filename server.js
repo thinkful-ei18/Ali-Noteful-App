@@ -1,8 +1,9 @@
 'use strict';
 
+const morgan = require('morgan');
 const data = require('./db/notes');
 const {PORT} = require('./config.js');
-const {logger} = require('./middleware');
+// const {logger} = require('./middleware');
 const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
 
@@ -11,9 +12,11 @@ console.log(simDB);
 const express = require('express');
 const app = express();
 
+app.use(morgan('dev'));
+
 app.use(express.static('public'));
 app.use(express.json());
-app.use(logger);
+// app.use(logger);
 
 app.get('/v1/notes', (req, res, next) => {
   // const searchNotes = val => (val.title.includes(searchTerm) || val.content.includes(searchTerm));

@@ -1,3 +1,5 @@
+import { currentId } from "async_hooks";
+
 /* global $ store api*/
 'use strict';
 
@@ -104,8 +106,17 @@ const noteful = (function () {
   //Delete function, grabs delete button 
   function handleDeleteButton() {
     $('.js-notes-list').on('click', '.js-note-delete-button', event => {
+      event.preventDefault();
       const noteId = getNoteIdFromElement(event.currentTarget);
-      console.log(noteId);
+      api.delete(noteId, () => {
+        api.search(store.currentSearchTerm, updateResponse => {
+          store.notes = updateResponse;
+          if(noteId === store.currentNote.id) {
+            store.currentNote = false;
+          }
+          render();
+        });
+      });
     });
   }
 

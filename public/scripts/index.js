@@ -8,11 +8,4 @@ $(document).ready(function () {
     store.notes = response;
     noteful.render();
   });
-  const newNote = {
-    title: 'new note',
-    content: 'the body'
-  };
-  api.create(newNote, response => {
-    console.log(response);
-  });
 });

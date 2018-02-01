@@ -3,7 +3,6 @@
 
 $(document).ready(function () {
   noteful.bindEventListeners();
-
   noteful.updateResponse(false)
     .then(noteful.updateStore);
 });

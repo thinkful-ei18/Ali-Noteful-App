@@ -4,9 +4,6 @@
 $(document).ready(function () {
   noteful.bindEventListeners();
 
-  api.search({})
-    .then(response => {
-      store.notes = response;
-      noteful.render();
-    });
+  noteful.updateResponse(false)
+    .then(noteful.updateStore);
 });

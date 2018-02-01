@@ -133,6 +133,8 @@ const noteful = (function () {
   return {
     render: render,
     bindEventListeners: bindEventListeners,
+    updateResponse: updateResponse,
+    updateStore: updateStore
   };
 
 }());

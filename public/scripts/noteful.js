@@ -104,29 +104,22 @@ const noteful = (function () {
     });
   }
 
-  // function updateResponse(updateResponse) {
-  //   store.currentNote = updateResponse;
-  //   return api.search(store.currentSearchTerm);
-  // }
-  // function updateStore(updateResponse) {
-  //   store.notes = updateResponse;
-  //   render();
-  // }
-  //Delete function, grabs delete button 
+
   function handleDeleteButton() {
     $('.js-notes-list').on('click', '.js-note-delete-button', event => {
       event.preventDefault();
       const noteId = getNoteIdFromElement(event.currentTarget);
       api.delete(noteId)
         .then(() => {
+          store.currentNote = false;
           return api.search(store.currentSearchTerm);
         })
         .then(updateStore);
-      if (noteId === store.currentNote.id) {
-        store.currentNote = false;
-      }
     });
   }
+
+
+
   function bindEventListeners() {
     handleNoteItemClick();
     handleNoteSearchSubmit();

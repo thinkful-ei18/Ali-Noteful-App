@@ -77,16 +77,17 @@ router.post('/', (req, res, next) => {
   });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', (req, res) => {
   const id = req.params.id;
   notes.delete(id, (err, result) => {
     if (err) {
-      return next(err);
+      console.error(err);
+      return res.sendStatus(500);
     } 
     if (result) {
       res.sendStatus(204);
     } else {
-      next();
+      res.sendStatus(404);
     }
   });
 });

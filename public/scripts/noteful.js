@@ -66,6 +66,14 @@ const noteful = (function () {
         });
     });
   }
+  function updateResponse(updateResponse) {
+    store.currentNote = updateResponse;
+    return api.search(store.currentSearchTerm);
+  }
+  function updateStore(updateResponse) {
+    store.notes = updateResponse;
+    render();
+  }
 
   function handleNoteFormSubmit() {
     $('.js-note-edit-form').on('submit', function (event) {
@@ -78,24 +86,12 @@ const noteful = (function () {
       };
       if (store.currentNote.id) {
         api.update(store.currentNote.id, noteObj)
-          .then(updateResponse => {
-            store.currentNote = updateResponse;
-            return api.search(store.currentSearchTerm);
-          })
-          .then(updateResponse => {
-            store.notes = updateResponse;
-            render();
-          });
+          .then(updateResponse)
+          .then(updateStore);
       } else {
         api.create(noteObj)
-          .then(updateResponse => {
-            store.currentNote = updateResponse;
-            return api.search(store.currentSearchTerm);
-          })
-          .then(updateResponse => {
-            store.notes = updateResponse;
-            render();
-          });
+          .then(updateResponse)
+          .then(updateStore);
       }
     });
   }
@@ -108,6 +104,14 @@ const noteful = (function () {
     });
   }
 
+  // function updateResponse(updateResponse) {
+  //   store.currentNote = updateResponse;
+  //   return api.search(store.currentSearchTerm);
+  // }
+  // function updateStore(updateResponse) {
+  //   store.notes = updateResponse;
+  //   render();
+  // }
   //Delete function, grabs delete button 
   function handleDeleteButton() {
     $('.js-notes-list').on('click', '.js-note-delete-button', event => {
@@ -117,16 +121,12 @@ const noteful = (function () {
         .then(() => {
           return api.search(store.currentSearchTerm);
         })
-        .then(updateResponse => {
-          store.notes = updateResponse;
-          if (noteId === store.currentNote.id) {
-            store.currentNote = false;
-          }
-          render();
-        });
+        .then(updateStore);
+      if (noteId === store.currentNote.id) {
+        store.currentNote = false;
+      }
     });
   }
-
   function bindEventListeners() {
     handleNoteItemClick();
     handleNoteSearchSubmit();

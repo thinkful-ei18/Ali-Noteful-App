@@ -37,4 +37,7 @@ app.use(function (err, req, res, next){
   });
 });
 
-app.listen(PORT, () => console.log('server working'));
+if (require.main === module) {
+  app.listen(PORT, () => console.log('server working'));
+}
+module.exports = app; // Export for testing!!!

@@ -29,6 +29,7 @@ router.get('/:id', (req, res, next) => {
       if (item) {
         res.json(item);
       } else {
+        res.sendStatus(404);
         res.json('not found');
       }
     })
@@ -42,6 +43,8 @@ router.put('/:id',  (req, res, next) => {
   updateFields.forEach(field => {
     if (field in req.body) {
       updateObj[field] = req.body[field];
+    } else {
+      res.sendStatus(400);
     }
   });
 

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/thinkful-ei18/Ali-Noteful-App.svg?branch=master)](https://travis-ci.org/thinkful-ei18/Ali-Noteful-App>)```
+[![Build Status](https://travis-ci.org/thinkful-ei18/Ali-Noteful-App.svg?branch=master)](https://travis-ci.org/thinkful-ei18/Ali-Noteful-App>)
 
 # noteful-app-v1
 
